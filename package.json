@@ -7,12 +7,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MYSTRAVIL/vscode-claude-session-manager.git"
+    "url": "https://github.com/LieonShelly/ClaudeCodeSessionManager.git"
   },
   "bugs": {
-    "url": "https://github.com/MYSTRAVIL/vscode-claude-session-manager/issues"
+    "url": "https://github.com/LieonShelly/ClaudeCodeSessionManager/issues"
   },
-  "homepage": "https://github.com/MYSTRAVIL/vscode-claude-session-manager#readme",
+  "homepage": "https://github.com/LieonShelly/ClaudeCodeSessionManager#readme",
   "keywords": [
     "claude",
     "claude-code",

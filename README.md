@@ -15,7 +15,7 @@ A VS Code sidebar for [Claude Code](https://claude.com/claude-code): browse your
 
 ## Install
 
-Install the `.vsix` from a [GitHub release](https://github.com/MYSTRAVIL/vscode-claude-session-manager/releases):
+Install the `.vsix` from a [GitHub release](https://github.com/LieonShelly/ClaudeCodeSessionManager/releases):
 
 ```sh
 code --install-extension claude-session-manager-<version>.vsix
