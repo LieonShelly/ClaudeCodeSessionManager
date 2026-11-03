@@ -1,0 +1,17 @@
+src/**
+node_modules/**
+.codegraph/**
+**/*.map
+tsconfig.json
+.gitignore
+memory/**
+test/**
+out-test/**
+tsconfig.test.json
+.github/**
+*.vsix
+.local/**
+.env
+docs/**
+CLAUDE.md
+AGENTS.md

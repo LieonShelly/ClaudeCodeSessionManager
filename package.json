@@ -1,0 +1,431 @@
+{
+  "name": "claude-session-manager",
+  "displayName": "Claude Code Session Manager",
+  "description": "Claude Code sidebar: session history, one-click resume, live terminal state, and restore across VS Code restarts.",
+  "version": "0.4.0",
+  "publisher": "mystravil",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MYSTRAVIL/vscode-claude-session-manager.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MYSTRAVIL/vscode-claude-session-manager/issues"
+  },
+  "homepage": "https://github.com/MYSTRAVIL/vscode-claude-session-manager#readme",
+  "keywords": [
+    "claude",
+    "claude-code",
+    "anthropic",
+    "agent",
+    "terminal",
+    "sessions"
+  ],
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "AI",
+    "Other"
+  ],
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#1e1e2e",
+    "theme": "dark"
+  },
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "claudeSession",
+          "title": "Claude Code",
+          "icon": "media/claude.svg"
+        }
+      ]
+    },
+    "views": {
+      "claudeSession": [
+        {
+          "type": "webview",
+          "id": "claudeSession.main",
+          "name": "Claude Code"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "claudeSession.newSession",
+        "title": "New Session",
+        "category": "Claude Code",
+        "icon": "$(add)"
+      },
+      {
+        "command": "claudeSession.newSessionFromEditorTitle",
+        "title": "New Claude Code Session",
+        "category": "Claude Code",
+        "icon": "media/claude-new-session.svg"
+      },
+      {
+        "command": "claudeSession.resumeSession",
+        "title": "Resume Session...",
+        "category": "Claude Code"
+      },
+      {
+        "command": "claudeSession.refresh",
+        "title": "Refresh",
+        "category": "Claude Code",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "claudeSession.session.openInEditor",
+        "title": "Open in Editor",
+        "category": "Claude Code"
+      },
+      {
+        "command": "claudeSession.session.openInPanel",
+        "title": "Open in Panel",
+        "category": "Claude Code"
+      },
+      {
+        "command": "claudeSession.session.copyId",
+        "title": "Copy Session ID",
+        "category": "Claude Code"
+      },
+      {
+        "command": "claudeSession.session.copyPath",
+        "title": "Copy Session File Path",
+        "category": "Claude Code"
+      },
+      {
+        "command": "claudeSession.session.reveal",
+        "title": "Reveal Session File",
+        "category": "Claude Code"
+      },
+      {
+        "command": "claudeSession.session.delete",
+        "title": "Delete Session...",
+        "category": "Claude Code"
+      },
+      {
+        "command": "claudeSession.focusNextWaiting",
+        "title": "Focus Next Session Needing Input",
+        "category": "Claude Code"
+      },
+      {
+        "command": "claudeSession.hooks.install",
+        "title": "Install Hooks",
+        "category": "Claude Code"
+      },
+      {
+        "command": "claudeSession.hooks.remove",
+        "title": "Remove Hooks",
+        "category": "Claude Code"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "claudeSession.newSession",
+        "key": "ctrl+alt+c n",
+        "mac": "cmd+alt+c n"
+      },
+      {
+        "command": "claudeSession.resumeSession",
+        "key": "ctrl+alt+c r",
+        "mac": "cmd+alt+c r"
+      },
+      {
+        "command": "claudeSession.focusNextWaiting",
+        "key": "ctrl+alt+c w",
+        "mac": "cmd+alt+c w"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "claudeSession.newSession",
+          "when": "view == claudeSession.main",
+          "group": "navigation@1"
+        },
+        {
+          "command": "claudeSession.refresh",
+          "when": "view == claudeSession.main",
+          "group": "navigation@2"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "claudeSession.newSessionFromEditorTitle",
+          "group": "navigation@-1"
+        }
+      ],
+      "webview/context": [
+        {
+          "command": "claudeSession.session.openInEditor",
+          "when": "webviewId == 'claudeSession.main' && webviewSection == 'session'",
+          "group": "1_open@1"
+        },
+        {
+          "command": "claudeSession.session.openInPanel",
+          "when": "webviewId == 'claudeSession.main' && webviewSection == 'session'",
+          "group": "1_open@2"
+        },
+        {
+          "command": "claudeSession.session.copyId",
+          "when": "webviewId == 'claudeSession.main' && webviewSection == 'session'",
+          "group": "2_copy@1"
+        },
+        {
+          "command": "claudeSession.session.copyPath",
+          "when": "webviewId == 'claudeSession.main' && webviewSection == 'session'",
+          "group": "2_copy@2"
+        },
+        {
+          "command": "claudeSession.session.reveal",
+          "when": "webviewId == 'claudeSession.main' && webviewSection == 'session'",
+          "group": "3_file@1"
+        },
+        {
+          "command": "claudeSession.session.delete",
+          "when": "webviewId == 'claudeSession.main' && webviewSection == 'session' && !sessionOpen",
+          "group": "4_delete@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "claudeSession.newSessionFromEditorTitle",
+          "when": "false"
+        },
+        {
+          "command": "claudeSession.session.openInEditor",
+          "when": "false"
+        },
+        {
+          "command": "claudeSession.session.openInPanel",
+          "when": "false"
+        },
+        {
+          "command": "claudeSession.session.copyId",
+          "when": "false"
+        },
+        {
+          "command": "claudeSession.session.copyPath",
+          "when": "false"
+        },
+        {
+          "command": "claudeSession.session.reveal",
+          "when": "false"
+        },
+        {
+          "command": "claudeSession.session.delete",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": [
+      {
+        "title": "Launch",
+        "order": 1,
+        "properties": {
+          "claudeSession.executable": {
+            "type": "string",
+            "default": "claude",
+            "description": "Claude Code executable name or absolute path."
+          },
+          "claudeSession.configDir": {
+            "type": "string",
+            "default": "",
+            "description": "Claude Code configuration directory. Empty uses CLAUDE_CONFIG_DIR, then ~/.claude."
+          },
+          "claudeSession.extraArgs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [],
+            "markdownDescription": "Extra command-line arguments for every Claude Code session this extension launches, for example `[\"--model\", \"sonnet\"]`."
+          },
+          "claudeSession.env": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "default": {},
+            "description": "Extra environment variables for every Claude Code session this extension launches."
+          },
+          "claudeSession.newSessionCwd": {
+            "type": "string",
+            "enum": [
+              "workspaceRoot",
+              "activeFileFolder",
+              "ask"
+            ],
+            "enumDescriptions": [
+              "The workspace folder. Multi-root workspaces ask which folder.",
+              "The folder of the active editor's file. Falls back to the workspace folder.",
+              "Always pick a folder."
+            ],
+            "default": "workspaceRoot",
+            "description": "Where New Session starts Claude Code."
+          },
+          "claudeSession.terminalLocation": {
+            "type": "string",
+            "enum": [
+              "editor",
+              "panel"
+            ],
+            "default": "editor",
+            "markdownDescription": "Where Claude Code sessions open. VS Code starts an `editor` terminal only once its tab is laid out, so it can appear a moment later than a `panel` one, and restored sessions open one after another."
+          },
+          "claudeSession.terminalIcon": {
+            "type": "string",
+            "default": "sparkle",
+            "markdownDescription": "[Codicon](https://microsoft.github.io/vscode-codicons/dist/codicon.html) id for Claude Code terminal tabs, without `$()`."
+          },
+          "claudeSession.terminalColor": {
+            "type": "string",
+            "default": "",
+            "markdownDescription": "Theme color id for Claude Code terminal tabs, for example `terminal.ansiMagenta`. Empty uses the default color."
+          },
+          "claudeSession.restoreOnStartup": {
+            "type": "string",
+            "enum": [
+              "always",
+              "ask",
+              "never"
+            ],
+            "enumDescriptions": [
+              "Reopen them without asking.",
+              "Ask once before reopening them.",
+              "Do not reopen them."
+            ],
+            "default": "always",
+            "description": "Reopen the Claude Code sessions that were open when VS Code closed, in the same order."
+          },
+          "claudeSession.focusOnStartup": {
+            "type": "boolean",
+            "default": true,
+            "description": "Open the Claude Code sidebar when VS Code starts. VS Code otherwise restores the last active view, so new windows and folders open on Explorer."
+          }
+        }
+      },
+      {
+        "title": "Sessions",
+        "order": 2,
+        "properties": {
+          "claudeSession.sessions.scope": {
+            "type": "string",
+            "enum": [
+              "workspace",
+              "all"
+            ],
+            "enumDescriptions": [
+              "Sessions started in or under the open workspace folders, or the same folders in other git worktrees of their repositories. All sessions when no folder is open.",
+              "Every Claude Code session."
+            ],
+            "default": "workspace",
+            "description": "Which sessions the sidebar and Resume Session list."
+          },
+          "claudeSession.sessions.maxShown": {
+            "type": "number",
+            "default": 300,
+            "minimum": 1,
+            "description": "Most sessions the sidebar lists. Open sessions always show."
+          },
+          "claudeSession.sessions.showEmpty": {
+            "type": "boolean",
+            "default": false,
+            "description": "List sessions that have no prompt yet."
+          },
+          "claudeSession.sessions.sortBy": {
+            "type": "string",
+            "enum": [
+              "modified",
+              "created"
+            ],
+            "default": "modified",
+            "description": "Order of the session list, newest first."
+          },
+          "claudeSession.sessions.groupBy": {
+            "type": "string",
+            "enum": [
+              "none",
+              "date",
+              "folder"
+            ],
+            "enumDescriptions": [
+              "One flat list, open sessions first.",
+              "Open, then Today, Yesterday, This Week, Older.",
+              "Open, then the folder each session ran in."
+            ],
+            "default": "date",
+            "description": "How the session list is grouped."
+          }
+        }
+      },
+      {
+        "title": "Notifications",
+        "order": 3,
+        "properties": {
+          "claudeSession.notify.onFinish": {
+            "type": "boolean",
+            "default": true,
+            "description": "Notify when a session finishes while its terminal tab is not in view."
+          },
+          "claudeSession.notify.onInput": {
+            "type": "boolean",
+            "default": true,
+            "description": "Notify when a session asks a question while its terminal tab is not in view."
+          },
+          "claudeSession.notify.minWorkSeconds": {
+            "type": "number",
+            "default": 10,
+            "minimum": 0,
+            "description": "Skip the finish notification when the agent worked for less than this many seconds. Questions always notify."
+          },
+          "claudeSession.notify.style": {
+            "type": "string",
+            "enum": [
+              "vscode",
+              "system",
+              "both"
+            ],
+            "enumDescriptions": [
+              "A VS Code notification.",
+              "An operating system notification with its sound, shown only while VS Code is not focused. Falls back to VS Code when unavailable.",
+              "A VS Code notification, plus a system notification while VS Code is not focused."
+            ],
+            "default": "vscode",
+            "description": "How session notifications appear."
+          }
+        }
+      },
+      {
+        "title": "Hooks",
+        "order": 4,
+        "properties": {
+          "claudeSession.hooks.nodePath": {
+            "type": "string",
+            "default": "",
+            "markdownDescription": "Absolute path to the Node.js executable used by the installed Claude Code hooks. Empty searches `PATH`. The extension host's own executable is Electron and is not used."
+          }
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
+    "test": "node -e \"require('node:fs').rmSync('out-test',{recursive:true,force:true})\" && tsc -p tsconfig.test.json && node --test --require ./out-test/test/setup.js \"out-test/test/*.test.js\"",
+    "package": "vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.2.0",
+    "typescript": "^5.6.0"
+  }
+}

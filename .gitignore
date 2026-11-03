@@ -1,0 +1,10 @@
+node_modules/
+out/
+*.vsix
+out-test/
+memory/
+.env
+.codegraph/
+
+# Maintainer-only: tracked on the private source repo, never published here.
+/CLAUDE.md
